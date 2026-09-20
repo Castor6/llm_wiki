@@ -1,6 +1,6 @@
 # LLM Wiki
 
-本分支新增可选的 **TypeSafe Jev** 重复内容判断与来源摘要引用抽查。配置方式和验证命令见 [Jev 接入说明](JEV.md)。Wiki 写作和问答继续由生成模型完成。
+本分支新增可选的 **TypeSafe Jev** 重复内容判断与来源摘要引用抽查。配置方式和验证命令见 [Jev 接入说明](JEV.md)，需求背景与改造理由见 [设计文档](JEV_DESIGN_CN.md)。Wiki 写作和问答继续由生成模型完成。
 
 <p align="center">
   <img src="logo.jpg" width="128" height="128" style="border-radius: 22%;" alt="LLM Wiki Logo">

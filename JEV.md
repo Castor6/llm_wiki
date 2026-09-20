@@ -2,6 +2,8 @@
 
 This fork adds optional TypeSafe Jev judgments to LLM Wiki. It retains the upstream GPLv3 license and notices. Integration changes were introduced on 2026-09-20.
 
+For the product background, implementation rationale, validation scope, and release behavior, see the [Chinese design document](JEV_DESIGN_CN.md).
+
 ## Setup
 
 In the desktop app, open **Settings → Jev**, enter a TypeSafe API key, and test the connection. The test sends a synthetic sentence only. Enable Jev to check duplicate candidates and sample claims from source summaries. A generative model remains necessary for extraction, writing, and chat.
