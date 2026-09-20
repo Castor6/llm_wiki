@@ -3,10 +3,14 @@
     "resources": {
       "../mcp-server/package.json": "mcp-server/package.json",
       "../mcp-server/dist": "mcp-server/dist",
-      "../mcp-server/node_modules": "mcp-server/node_modules"
+      "../mcp-server/node_modules": "mcp-server/node_modules",
+      "../LICENSE": "LICENSE",
+      "../DISTRIBUTION.txt": "DISTRIBUTION.txt"
     },
     "macOS": {
-      "frameworks": ["pdfium/libpdfium.dylib"]
+      "frameworks": [
+        "pdfium/libpdfium.dylib"
+      ]
     }
   }
 }

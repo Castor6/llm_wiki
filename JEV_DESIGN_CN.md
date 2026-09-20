@@ -142,30 +142,31 @@ Jev 的 confidence 来自输出概率分布的集中程度，不代表事实正�
 
 当前合理的产品决策是保留独立开关和提示式复核，用真实数据决定是否扩大检查范围、调整阈值或加入自动操作。若额外复核没有带来可衡量收益，应调整入口、检索和问题设计，而不是只增加模型调用次数。
 
-## 7. 合并 PR 后会自动打包和发布吗
+## 7. 发行配置与发布流程
 
-**不会。当前配置将代码合并、试包和正式发布分开。** 本 PR 没有修改 GitHub Actions 工作流。
+首个独立发行版本为 **LLM Wiki Jev 0.7.0**。应用标识使用 `io.github.castor6.llmwiki`，更新检查、关于页面和下载入口指向 `Castor6/llm_wiki`；全局配置与上游应用分开。
 
-| 操作 | 工作流声明的行为 | 是否发布 GitHub Release |
+**合并 PR 不会直接公开 Release。** 发行流程将代码检查、试包和公开发布分开：
+
+| 操作 | 工作流行为 | 是否发布 GitHub Release |
 | --- | --- | --- |
-| 向 `main` 提 PR，或合并后产生 `main` push | CI 执行前端、MCP 和 Rust 构建检查；不上传桌面安装包 | 否 |
-| 手动运行 `Build & Release` | 构建桌面安装包，上传到 Actions artifacts，保留 14 天 | 否 |
-| 推送名称匹配 `v*` 的 Git 标签 | 构建各平台安装包并上传；后续上传浏览器扩展 ZIP | 是，配置为正式公开 Release，而非草稿或预发布 |
+| 向 `main` 提 PR，或合并后产生 `main` push | CI 执行 mock 单元测试、TypeScript/前端构建、版本一致性检查，以及 MCP/Rust 构建检查 | 否 |
+| 手动运行 `Build & Release` | 检查通过后构建四个平台安装包和浏览器扩展，上传 Actions artifacts，保留 14 天 | 否 |
+| 推送名称匹配 `v*` 的 Git 标签 | 校验标签与应用版本一致；全部打包成功后集中创建草稿、上传并回下载校验 SHA256，再公开 | 是；稳定版本正式发布，含预发布后缀的版本标记为 prerelease |
 
-依据：[ci.yml](.github/workflows/ci.yml)、[build.yml](.github/workflows/build.yml)。打包矩阵包括 macOS Apple Silicon、Windows、Linux x86_64 和 Linux ARM64；没有单独的 Intel Mac 构建。实际安装包能否全部生成，仍要以工作流运行结果为准。
+依据：[ci.yml](.github/workflows/ci.yml)、[build.yml](.github/workflows/build.yml)、[发布校验脚本](scripts/verify-release.mjs)。四个平台分别是 macOS Apple Silicon、Windows、Linux x86_64 和 Linux ARM64；没有单独的 Intel Mac 构建。
 
-**Fork 当前状态也需要确认。** 2026-09-20 的只读 GitHub API 检查显示仓库允许 Actions，但已登记工作流和运行记录均为 0；按文件名读取 `build.yml` 工作流返回 404，尽管该文件确实存在于远端 `main`。因此尚未确认 Fork 工作流已具备可运行状态，不能承诺下一次合并一定会跑 CI。需要在 [Actions 页面](https://github.com/Castor6/llm_wiki/actions)确认是否需要启用 Fork 工作流，再通过一次手动构建验证。
+这一轮还完成了以下发行配置：
 
-独立发行前还需要处理几件与现状直接相关的事：
+- **Fork Actions 已启用。** GitHub API 已能列出状态为 active 的 CI 与 Build & Release。实际运行结果可在 [Actions 页面](https://github.com/Castor6/llm_wiki/actions)查看。
+- **统一版本号。** 应用、锁文件、Tauri 与 Cargo 版本同步为 0.7.0；脚本检查它们一致，并要求发布标签严格匹配。源码指引中的版本也纳入检查。
+- **完整发布后才公开。** 各平台先保存构建产物，集中发布任务等待所有必要任务成功，再检查必需包格式、文件名和校验值。构建失败不会提前公开一个缺少平台产物的版本。
+- **随包附带许可与源码入口。** 安装包和 Windows 便携包附带 LICENSE 与发行声明；Release 提供对应标签的源码与构建说明。
+- **签名状态明确。** 当前仓库没有 Apple 签名与公证凭据，Windows 代码签名也未配置。首版发布说明明确标注这些状态，不能把打包成功等同于平台签名或公证通过。
 
-- **更新来源和下载入口。** 自动检查更新、设置页手动检查更新，以及 README 中的下载链接仍指向上游 `nashsu/llm_wiki`。发布自己的版本前应切换到本 Fork，避免用户下载或更新到上游版本。
-- **版本号。** 当前应用版本仍是 `0.6.11`；推送一个新标签不会自动改写 `package.json`、Tauri 配置和 Cargo 配置中的应用版本。
-- **签名与权限。** 工作流声明 `contents: write` 并使用 GitHub 提供的 `GITHUB_TOKEN` 上传产物；macOS 构建还引用 Apple 签名与公证相关 Secrets。本次没有读取或验证其配置，不能承诺已具备签名、公证条件。
-- **发布完整性。** 当前 CI 不运行单元测试，标签发布也不依赖单元测试通过。各平台在各自的打包任务中直接发布，可能先出现一个产物不完整的正式 Release，随后其他平台才完成或失败。浏览器扩展任务则等待打包矩阵成功后运行。
+**打包不需要 Jev API Key。** 自动化只运行 mock 测试，不运行付费真实 Jev 测试，也不内置开发者 Key。最终用户在设置中配置自己的凭据。
 
-**打包不需要 Jev API Key。** 当前工作流不调用真实 Jev 测试，也不应把开发者的 Key 内置到分发的应用中；最终用户在设置中配置自己的凭据。
-
-建议的首次发布顺序是：完成代码合并与检查 → 确认 Fork Actions 可运行 → 调整更新源、版本和发布配置 → 手动打包并安装试用 → 为同一版代码推送版本标签正式发布。这是后续发布建议，本次仅审计和记录，没有启用或触发工作流，也没有创建 Release。
+首次发布按以下顺序执行：完成代码检查与合并 → 手动打包 → 安装试用可访问平台的产物 → 为同一版代码推送版本标签 → 等所有平台构建与产物校验通过后公开。发布后的标签不移动，后续修复使用新版本。维护者操作见 [RELEASING.md](RELEASING.md)，实际发行状态见 [Releases](https://github.com/Castor6/llm_wiki/releases)。
 
 ## 8. 使用与维护入口
 

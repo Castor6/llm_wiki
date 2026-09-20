@@ -1,0 +1,20 @@
+LLM Wiki Jev 0.7.0
+
+This is an independently distributed, modified version of LLM Wiki.
+Original LLM Wiki: Copyright (C) 2024-2026 Yong Su.
+Upstream project: https://github.com/nashsu/llm_wiki
+Fork and Jev integration maintained by Castor6:
+https://github.com/Castor6/llm_wiki
+
+This application is distributed under the GNU General Public License, version 3.
+See the accompanying LICENSE file for the complete license and warranty terms.
+Original copyright and license notices are retained in the source tree.
+
+Source code for this version, including build scripts and dependency lockfiles:
+https://github.com/Castor6/llm_wiki/tree/v0.7.0
+Source archive:
+https://github.com/Castor6/llm_wiki/archive/refs/tags/v0.7.0.tar.gz
+Build instructions: README.md and README_CN.md in that source tree.
+For a development build, use the corresponding Git commit in the same repository.
+
+Third-party components retain their respective licenses and notices.

@@ -26,6 +26,24 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: "0.7.0",
+    date: "2026-09-20",
+    highlights: {
+      en: [
+        "Introduced LLM Wiki Jev as an open-source fork with its own application settings and update source.",
+        "Added optional TypeSafe Jev settings and a connection test using synthetic text.",
+        "Added Jev review of duplicate candidates while keeping page merges under your control.",
+        "Added sampled source-summary citation checks with source links and actionable review items.",
+      ],
+      zh: [
+        "推出开源分支 LLM Wiki Jev，使用独立的应用配置和更新来源。",
+        "新增可选的 TypeSafe Jev 设置与合成文本连接测试。",
+        "新增 Jev 重复候选复核，页面合并仍由用户确认。",
+        "新增来源摘要引用抽查，提供原文链接和可处理的待复核项。",
+      ],
+    },
+  },
+  {
     version: "0.6.11",
     date: "2026-08-25",
     highlights: {
