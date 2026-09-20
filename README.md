@@ -1,5 +1,7 @@
 # LLM Wiki
 
+This fork adds optional **TypeSafe Jev** duplicate-candidate judgments and sampled source-summary citation checks. See [Jev setup and verification](JEV.md). Generative models continue to write Wiki pages and answer questions.
+
 <p align="center">
   <img src="logo.jpg" width="128" height="128" style="border-radius: 22%;" alt="LLM Wiki Logo">
 </p>

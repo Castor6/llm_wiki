@@ -18,6 +18,7 @@ const {
   mockLoadNotDuplicates,
   mockReadFile,
   mockStreamChat,
+  mockVerifyJev,
 } = vi.hoisted(() => ({
   mockCandidatePairs: vi.fn(),
   mockClusterByPairs: vi.fn(),
@@ -26,7 +27,9 @@ const {
   mockLoadNotDuplicates: vi.fn(),
   mockReadFile: vi.fn(),
   mockStreamChat: vi.fn(),
+  mockVerifyJev: vi.fn(),
 }))
+vi.mock("./jev-dedup", () => ({ verifyDuplicateGroupsWithJev: mockVerifyJev }))
 vi.mock("./llm-client", async () => {
   const actual = await vi.importActual<typeof import("./llm-client")>("./llm-client")
   return { ...actual, streamChat: mockStreamChat }
@@ -53,6 +56,8 @@ vi.mock("@/lib/dedup_embedding", () => ({
 
 import { buildDedupLlmCall, runDuplicateDetection } from "./dedup-runner"
 import type { LlmConfig } from "@/stores/wiki-store"
+import { useWikiStore } from "@/stores/wiki-store"
+import { DEFAULT_JEV_CONFIG } from "./jev-config"
 
 const cfg: LlmConfig = {
   provider: "ollama",
@@ -78,6 +83,33 @@ beforeEach(() => {
   mockLoadNotDuplicates.mockReset()
   mockReadFile.mockReset()
   mockStreamChat.mockReset()
+  mockVerifyJev.mockReset()
+  useWikiStore.getState().setJevConfig(DEFAULT_JEV_CONFIG)
+})
+
+describe("optional Jev verification routing", () => {
+  it("verifies detector candidates and respects the returned result", async () => {
+    setupThreePageProject()
+    setupEmbeddingConfig(false)
+    mockLoadNotDuplicates.mockResolvedValue([["foo", "baz"]])
+    mockDetectorGroup()
+    useWikiStore.getState().setJevConfig({ ...DEFAULT_JEV_CONFIG, enabled: true, apiKey: "test-only" })
+    mockVerifyJev.mockResolvedValue([])
+    expect(await runDuplicateDetection("/project", cfg)).toEqual([])
+    expect(mockVerifyJev).toHaveBeenCalledTimes(1)
+    expect(mockVerifyJev.mock.calls[0][4]).toEqual([["foo", "baz"]])
+  })
+
+  it("does not fall back to unverified candidates after a Jev error", async () => {
+    setupThreePageProject()
+    setupEmbeddingConfig(false)
+    mockLoadNotDuplicates.mockResolvedValue([])
+    mockDetectorGroup()
+    useWikiStore.getState().setJevConfig({ ...DEFAULT_JEV_CONFIG, enabled: true, apiKey: "test-only" })
+    mockVerifyJev.mockRejectedValue(new Error("Jev unavailable"))
+    await expect(runDuplicateDetection("/project", cfg)).rejects.toThrow("Jev unavailable")
+    expect(mockStreamChat).toHaveBeenCalledTimes(1)
+  })
 })
 
 function setupThreePageProject() {

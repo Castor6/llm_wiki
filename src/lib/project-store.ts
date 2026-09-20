@@ -4,6 +4,7 @@ import type { ApiConfig, CustomLlmPreset, GeneralConfig, LlmConfig, SearchApiCon
 import { normalizeSourceWatchConfig } from "@/lib/source-watch-config"
 import { normalizePath } from "@/lib/path-utils"
 import { DEFAULT_ZOOM_LEVEL, clampZoomLevel } from "@/stores/zoom-store"
+import { normalizeJevConfig, type JevConfig } from "@/lib/jev-config"
 
 const STORE_NAME = "app-state.json"
 const RECENT_PROJECTS_KEY = "recentProjects"
@@ -168,6 +169,26 @@ export async function loadSearchApiConfig(): Promise<SearchApiConfig | null> {
 }
 
 const EMBEDDING_KEY = "embeddingConfig"
+
+const JEV_CONFIG_KEY = "jevConfig"
+let jevConfigWrite = Promise.resolve()
+
+export async function saveJevConfig(config: JevConfig): Promise<void> {
+  const normalized = normalizeJevConfig(config)
+  // Inline settings may save rapidly. Keep the newest configuration last,
+  // including when an earlier storage write failed.
+  const write = jevConfigWrite.then(async () => {
+    const store = await getStore()
+    await store.set(JEV_CONFIG_KEY, normalized)
+  })
+  jevConfigWrite = write.catch(() => {})
+  await write
+}
+
+export async function loadJevConfig(): Promise<JevConfig> {
+  const store = await getStore()
+  return normalizeJevConfig(await store.get<unknown>(JEV_CONFIG_KEY))
+}
 
 export async function saveEmbeddingConfig(config: EmbeddingConfig): Promise<void> {
   const store = await getStore()
