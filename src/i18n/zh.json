@@ -480,6 +480,7 @@
     "categories": {
       "general": "通用",
       "llm": "LLM 模型",
+      "jev": "Jev",
       "embedding": "向量嵌入",
       "multimodal": "图片描述",
       "webSearch": "外部信息源",
@@ -495,6 +496,27 @@
       "about": "关于"
     },
     "sections": {
+      "jev": {
+        "title": "Jev · TypeSafe",
+        "description": "使用 Jev 检查候选重复页面，并抽查来源摘要中的结论是否得到引用支持。这些检查提供参考，撰写 Wiki 和聊天仍需单独配置生成模型。",
+        "enabled": "为所有项目启用 Jev",
+        "dataNotice": "启用后，相关来源文本和 Wiki 片段将发送至 TypeSafe 进行判断。",
+        "apiKey": "TypeSafe API 密钥",
+        "apiKeyPlaceholder": "输入你的 TypeSafe API 密钥",
+        "storageHint": "保存在此应用的本地设置中，所有项目共用，不包含在项目导出文件中。",
+        "model": "模型版本",
+        "modelHint": "固定版本便于在同一模型上比较结果。jev-latest 会跟随 TypeSafe 的最新版本。",
+        "timeout": "请求超时（秒）",
+        "testConnection": "测试连接",
+        "testRunning": "测试中…",
+        "testHint": "向 TypeSafe 发送一段简短的合成示例，会消耗 API 额度。此测试不会发送项目资料。",
+        "testSuccess": "连接成功 · {{model}} · 输入 {{input}} / 输出 {{output}} tokens",
+        "testFailed": "连接失败，请检查 API 密钥、模型版本和网络。",
+        "autoSaveHint": "离开输入框或切换开关时自动保存。",
+        "saving": "保存中…",
+        "saveFailed": "设置未能保存，本次运行仍会生效。请重试，以便重启后保留设置。",
+        "retrySave": "重试保存"
+      },
       "general": {
         "title": "通用",
         "description": "桌面应用的启动和窗口关闭行为。",

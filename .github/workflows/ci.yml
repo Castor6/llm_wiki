@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   check:
     strategy:
@@ -44,13 +47,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
 
       - name: Install frontend dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Check release versions
+        run: node scripts/verify-release.mjs
+
+      - name: Run unit tests
+        run: npm run test:mocks
 
       - name: Check frontend build
-        run: npx vite build
+        run: npm run build
 
       - name: Prepare MCP server resources
         run: |

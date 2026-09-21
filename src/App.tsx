@@ -9,7 +9,7 @@ import { useLintStore } from "@/stores/lint-store"
 import { useChatStore } from "@/stores/chat-store"
 import { BASE_FONT_SIZE_PX, useZoomStore } from "@/stores/zoom-store"
 import { openProject } from "@/commands/fs"
-import { getLastProject, getRecentProjects, saveLastProject, loadLlmConfig, loadLanguage, loadSearchApiConfig, loadEmbeddingConfig, loadMineruConfig, loadMultimodalConfig, loadOutputLanguage, loadProviderConfigs, loadCustomLlmPresets, loadActivePresetId, loadTaskModelRouting, loadProjectLlmOverride, loadProxyConfig, loadScheduledImportConfig, saveScheduledImportConfig, loadSourceWatchConfig, loadApiConfig, loadGeneralConfig, loadZoomLevel } from "@/lib/project-store"
+import { getLastProject, getRecentProjects, saveLastProject, loadLlmConfig, loadLanguage, loadSearchApiConfig, loadJevConfig, loadEmbeddingConfig, loadMineruConfig, loadMultimodalConfig, loadOutputLanguage, loadProviderConfigs, loadCustomLlmPresets, loadActivePresetId, loadTaskModelRouting, loadProjectLlmOverride, loadProxyConfig, loadScheduledImportConfig, saveScheduledImportConfig, loadSourceWatchConfig, loadApiConfig, loadGeneralConfig, loadZoomLevel } from "@/lib/project-store"
 import { loadReviewItems, loadLintItems, loadChatHistory, loadChatPreferences } from "@/lib/persist"
 import { setupAutoSave } from "@/lib/auto-save"
 import { startClipWatcher } from "@/lib/clip-watcher"
@@ -20,6 +20,7 @@ import { WelcomeScreen } from "@/components/project/welcome-screen"
 import { CreateProjectDialog } from "@/components/project/create-project-dialog"
 import type { WikiProject } from "@/types/wiki"
 import { useAppDialog } from "@/stores/app-dialog-store"
+import { GITHUB_REPOSITORY, RELEASES_URL } from "@/lib/distribution"
 
 function applyDocumentZoom(level: number) {
   document.documentElement.style.fontSize = `${BASE_FONT_SIZE_PX * level}px`
@@ -198,7 +199,7 @@ function App() {
                 "- Bigger red dot on the Settings icon\n" +
                 "- Top banner with one-click dismiss\n" +
                 "- Once dismissed, won't reappear for this version",
-              html_url: "https://github.com/nashsu/llm_wiki/releases",
+              html_url: RELEASES_URL,
               published_at: new Date().toISOString(),
             },
           },
@@ -272,7 +273,7 @@ function App() {
         )
         const result = await checkForUpdates({
           currentVersion: __APP_VERSION__,
-          repo: "nashsu/llm_wiki",
+          repo: GITHUB_REPOSITORY,
         })
         if (cancelled) return
         useUpdateStore.getState().setResult(result, Date.now())
@@ -352,6 +353,8 @@ function App() {
         if (savedSearchConfig) {
           useWikiStore.getState().setSearchApiConfig(savedSearchConfig)
         }
+        // TypeSafe credentials and preferences are global, independent of projects.
+        useWikiStore.getState().setJevConfig(await loadJevConfig())
         const savedEmbeddingConfig = await loadEmbeddingConfig()
         if (savedEmbeddingConfig) {
           useWikiStore.getState().setEmbeddingConfig(savedEmbeddingConfig)

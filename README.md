@@ -1,4 +1,6 @@
-# LLM Wiki
+# LLM Wiki Jev
+
+This independently distributed fork of [nashsu/llm_wiki](https://github.com/nashsu/llm_wiki), maintained by [Castor6](https://github.com/Castor6), adds optional **TypeSafe Jev** duplicate-candidate judgments and sampled source-summary citation checks. See [Jev setup and verification](JEV.md). Generative models continue to write Wiki pages and answer questions.
 
 <p align="center">
   <img src="logo.jpg" width="128" height="128" style="border-radius: 22%;" alt="LLM Wiki Logo">
@@ -361,7 +363,7 @@ The original is platform-agnostic (abstract pattern). We handle concrete cross-p
 - **macOS close-to-hide** — close button hides window (app stays running in background), click dock icon to restore, Cmd+Q to quit
 - **Windows/Linux close confirmation** — confirmation dialog before quitting to prevent accidental data loss
 - **Tauri v2** — native desktop on macOS, Windows, Linux
-- **GitHub Actions CI/CD** — automated builds for macOS (ARM + Intel), Windows (.msi), Linux (.deb / .AppImage)
+- **GitHub Actions CI/CD** — automated builds for macOS (Apple Silicon / ARM64), Windows (.msi), Linux (.deb / .AppImage)
 
 ### 19. Other Additions
 
@@ -397,9 +399,11 @@ The original is platform-agnostic (abstract pattern). We handle concrete cross-p
 
 ### Pre-built Binaries
 
-Download from [Releases](https://github.com/nashsu/llm_wiki/releases):
-- **macOS**: `.dmg` (Apple Silicon + Intel)
-- **Windows**: `.msi`
+Download **LLM Wiki Jev** from [this fork’s Releases](https://github.com/Castor6/llm_wiki/releases). Its application settings are separate from upstream LLM Wiki; configure your providers again and open an existing Wiki folder if needed. Update checks follow this fork only.
+
+Available packages:
+- **macOS**: `.dmg` (Apple Silicon / ARM64)
+- **Windows**: `.msi` / `.exe` installer / portable `.zip`
 - **Linux**: `.deb` / `.AppImage`
 
 ### Build from Source
@@ -409,7 +413,7 @@ Download from [Releases](https://github.com/nashsu/llm_wiki/releases):
 #   macOS:  brew install protobuf
 #   Linux:  sudo apt install protobuf-compiler
 #   Windows: choco install protoc
-git clone https://github.com/nashsu/llm_wiki.git
+git clone https://github.com/Castor6/llm_wiki.git
 cd llm_wiki
 npm install
 npm --prefix mcp-server ci && npm run mcp:build   # mcp-server/dist is bundled as a Tauri resource
@@ -495,11 +499,11 @@ my-wiki/
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=nashsu%2Fllm_wiki&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=Castor6%2Fllm_wiki&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=nashsu/llm_wiki&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=nashsu/llm_wiki&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=nashsu/llm_wiki&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Castor6/llm_wiki&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Castor6/llm_wiki&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Castor6/llm_wiki&type=date&legend=top-left" />
  </picture>
 </a>
 

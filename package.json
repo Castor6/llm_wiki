@@ -1,7 +1,7 @@
 {
   "name": "llm-wiki",
   "private": true,
-  "version": "0.6.11",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,8 +10,9 @@
     "build:desktop": "npm --prefix mcp-server ci && npm run mcp:build && npm run build",
     "preview": "vite preview",
     "test": "npm run test:mocks && npm run test:llm",
-    "test:mocks": "vitest run --exclude='**/*.real-llm.test.ts' --exclude='**/mcp-server/**'",
+    "test:mocks": "vitest run --exclude=\"**/*.real-llm.test.ts\" --exclude=\"**/mcp-server/**\"",
     "test:llm": "vitest run real-llm --no-file-parallelism --reporter=verbose",
+    "test:jev:live": "node scripts/test-jev-live.mjs",
     "mcp:build": "npm --prefix mcp-server run build",
     "mcp:test": "npm --prefix mcp-server test",
     "tauri": "tauri"

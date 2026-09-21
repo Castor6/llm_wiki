@@ -480,6 +480,7 @@
     "categories": {
       "general": "General",
       "llm": "LLM Models",
+      "jev": "Jev",
       "embedding": "Embeddings",
       "multimodal": "Image Captioning",
       "webSearch": "External Information Sources",
@@ -495,6 +496,27 @@
       "about": "About"
     },
     "sections": {
+      "jev": {
+        "title": "Jev · TypeSafe",
+        "description": "Use Jev to check suggested duplicate pages and review a sample of claims in source summaries against their citations. These checks are advisory. A separate generation model is still required for wiki writing and chat.",
+        "enabled": "Enable Jev for all projects",
+        "dataNotice": "When enabled, relevant source text and wiki excerpts are sent to TypeSafe for judgments.",
+        "apiKey": "TypeSafe API key",
+        "apiKeyPlaceholder": "Enter your TypeSafe API key",
+        "storageHint": "Saved in this app’s local settings, shared across projects and excluded from project exports.",
+        "model": "Model version",
+        "modelHint": "A fixed version keeps comparisons on the same model. jev-latest follows TypeSafe’s latest version.",
+        "timeout": "Request timeout (seconds)",
+        "testConnection": "Test connection",
+        "testRunning": "Testing…",
+        "testHint": "Sends a short synthetic example to TypeSafe and uses API credits. This test sends no project materials.",
+        "testSuccess": "Connected · {{model}} · {{input}} input / {{output}} output tokens",
+        "testFailed": "Connection failed. Check your API key, model version and network.",
+        "autoSaveHint": "Settings save automatically when you leave a field or change the switch.",
+        "saving": "Saving…",
+        "saveFailed": "Could not save settings. They apply to this session; retry to keep them after restart.",
+        "retrySave": "Retry saving"
+      },
       "general": {
         "title": "General",
         "description": "Startup and window behavior for the desktop app.",

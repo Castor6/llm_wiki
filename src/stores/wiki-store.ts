@@ -8,6 +8,7 @@ import {
 } from "@/lib/wiki-page-resolver"
 import { DEFAULT_GRAPH_FILTERS, type GraphFilterState } from "@/lib/graph-filters"
 import type { OutputLanguage } from "@/lib/output-language-options"
+import { DEFAULT_JEV_CONFIG, normalizeJevConfig, type JevConfig } from "@/lib/jev-config"
 
 /**
  * Wire protocol used when `provider === "custom"`. Other providers have a
@@ -435,6 +436,8 @@ interface WikiState {
   taskModelRouting: TaskModelRoutingConfig
   projectLlmOverride: ProjectLlmOverride
   searchApiConfig: SearchApiConfig
+  /** Global TypeSafe judgments configuration; never included in project archives. */
+  jevConfig: JevConfig
   embeddingConfig: EmbeddingConfig
   multimodalConfig: MultimodalConfig
   outputLanguage: OutputLanguage
@@ -466,6 +469,7 @@ interface WikiState {
   setTaskModelRouting: (config: TaskModelRoutingConfig) => void
   setProjectLlmOverride: (config: ProjectLlmOverride) => void
   setSearchApiConfig: (config: SearchApiConfig) => void
+  setJevConfig: (config: JevConfig) => void
   setEmbeddingConfig: (config: EmbeddingConfig) => void
   setMultimodalConfig: (config: MultimodalConfig) => void
   setOutputLanguage: (lang: OutputLanguage) => void
@@ -590,6 +594,8 @@ export const useWikiStore = create<WikiState>((set) => ({
     },
   },
 
+  jevConfig: { ...DEFAULT_JEV_CONFIG },
+
   embeddingConfig: {
     enabled: false,
     endpoint: "",
@@ -676,6 +682,7 @@ export const useWikiStore = create<WikiState>((set) => ({
   setTaskModelRouting: (taskModelRouting) => set({ taskModelRouting }),
   setProjectLlmOverride: (projectLlmOverride) => set({ projectLlmOverride }),
   setSearchApiConfig: (searchApiConfig) => set({ searchApiConfig }),
+  setJevConfig: (jevConfig) => set({ jevConfig: normalizeJevConfig(jevConfig) }),
   setEmbeddingConfig: (embeddingConfig) => set({ embeddingConfig }),
   setMultimodalConfig: (multimodalConfig) => set({ multimodalConfig }),
   setOutputLanguage: (outputLanguage) => set({ outputLanguage }),

@@ -1,4 +1,6 @@
-# LLM Wiki
+# LLM Wiki Jev
+
+[Castor6](https://github.com/Castor6)가 독립적으로 배포하는 [nashsu/llm_wiki](https://github.com/nashsu/llm_wiki)의 포크입니다. 선택 기능인 **TypeSafe Jev** 중복 후보 판단과 요약 인용 표본 검사를 추가했습니다. [Jev 설정](JEV.md)을 참고하세요. 앱 설정은 원본 앱과 별도로 저장하며 업데이트 알림은 이 포크의 릴리스를 사용합니다.
 
 <p align="center">
   <img src="logo.jpg" width="128" height="128" style="border-radius: 22%;" alt="LLM Wiki Logo">
@@ -369,7 +371,7 @@ LLM Wiki는 문서를 자동으로 정리되고 서로 연결된 지식 베이�
 - **macOS close-to-hide** — close button은 창을 숨깁니다(앱은 background에서 계속 실행). dock icon을 클릭하면 복원되고 Cmd+Q로 종료합니다
 - **Windows/Linux 종료 확인** — 실수로 데이터를 잃지 않도록 종료 전 확인 대화상자 표시
 - **Tauri v2** — macOS, Windows, Linux에서 native desktop 제공
-- **GitHub Actions CI/CD** — macOS(ARM + Intel), Windows(.msi), Linux(.deb / .AppImage) 자동 빌드
+- **GitHub Actions CI/CD** — macOS(Apple Silicon / ARM64), Windows(.msi), Linux(.deb / .AppImage) 자동 빌드
 
 ### 19. 기타 추가 사항
 
@@ -405,10 +407,10 @@ LLM Wiki는 문서를 자동으로 정리되고 서로 연결된 지식 베이�
 
 ### 사전 빌드 바이너리
 
-[Releases](https://github.com/nashsu/llm_wiki/releases)에서 다운로드하세요.
+[Releases](https://github.com/Castor6/llm_wiki/releases)에서 다운로드하세요.
 
-- **macOS**: `.dmg`(Apple Silicon + Intel)
-- **Windows**: `.msi`
+- **macOS**: `.dmg`(Apple Silicon / ARM64)
+- **Windows**: `.msi` / `.exe` / 포터블 `.zip`
 - **Linux**: `.deb` / `.AppImage`
 
 ### 소스에서 빌드
@@ -418,7 +420,7 @@ LLM Wiki는 문서를 자동으로 정리되고 서로 연결된 지식 베이�
 #   macOS:   brew install protobuf
 #   Linux:   sudo apt install protobuf-compiler
 #   Windows: choco install protoc
-git clone https://github.com/nashsu/llm_wiki.git
+git clone https://github.com/Castor6/llm_wiki.git
 cd llm_wiki
 npm install
 npm --prefix mcp-server ci && npm run mcp:build   # mcp-server/dist는 Tauri 리소스로 번들됩니다
@@ -501,11 +503,11 @@ my-wiki/
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=nashsu%2Fllm_wiki&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=Castor6%2Fllm_wiki&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=nashsu/llm_wiki&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=nashsu/llm_wiki&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=nashsu/llm_wiki&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Castor6/llm_wiki&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Castor6/llm_wiki&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Castor6/llm_wiki&type=date&legend=top-left" />
  </picture>
 </a>
 

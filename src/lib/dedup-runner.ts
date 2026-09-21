@@ -16,6 +16,8 @@ import {
 import { loadEmbeddingConfig } from "@/lib/project-store"
 import { normalizePath } from "@/lib/path-utils"
 import type { EmbeddingConfig, LlmConfig } from "@/stores/wiki-store"
+import { useWikiStore } from "@/stores/wiki-store"
+import { verifyDuplicateGroupsWithJev } from "./jev-dedup"
 import type { FileNode } from "@/types/wiki"
 
 /**
@@ -194,12 +196,14 @@ export async function runDuplicateDetection(
   const notDup = await loadNotDuplicates(projectPath)
   const llm = buildDedupLlmCall(llmConfig, DEDUP_DETECTION_MAX_TOKENS)
   const embeddingConfig = await loadEmbeddingConfig()
+  const jevConfig = { ...useWikiStore.getState().jevConfig }
+  let groups: DuplicateGroup[] | undefined
 
   const embeddingEndpoint =
     typeof embeddingConfig?.endpoint === "string" ? embeddingConfig.endpoint.trim() : ""
   if (embeddingConfig?.enabled && embeddingEndpoint) {
     try {
-      return await detectDuplicateGroupsWithEmbeddingPrefilter(
+      groups = await detectDuplicateGroupsWithEmbeddingPrefilter(
         summaries,
         embeddingConfig,
         llm,
@@ -218,10 +222,14 @@ export async function runDuplicateDetection(
     }
   }
 
-  return detectDuplicateGroupsInBoundedBatches(summaries, llm, {
-    signal: options.signal,
-    notDuplicates: notDup,
+  groups ??= await detectDuplicateGroupsInBoundedBatches(summaries, llm, {
+    signal: options.signal, notDuplicates: notDup,
   })
+  // Jev failure is surfaced to the caller. Do not silently present the
+  // unverified LLM candidates as if they passed this optional check.
+  return jevConfig.enabled
+    ? verifyDuplicateGroupsWithJev(groups, summaries, jevConfig, options.signal, notDup)
+    : groups
 }
 
 async function detectDuplicateGroupsInBoundedBatches(

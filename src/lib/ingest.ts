@@ -43,6 +43,7 @@ import { GENERATION_WIKI_TYPES } from "@/lib/wiki-page-types"
 import { computeContextBudget } from "@/lib/context-budget"
 import { refreshProjectFileTree } from "@/lib/project-file-tree-refresh"
 import { persistParsedMarkdown } from "@/lib/parsed-source-output"
+import { reviewSourceSummaryWithJev, syncJevCitationReviews } from "@/lib/jev-ingest-review"
 
 const LONG_SOURCE_MIN_BUDGET = 8_000
 const LONG_SOURCE_MAX_SINGLE_PASS_BUDGET = 300_000
@@ -854,9 +855,16 @@ async function autoIngestImpl(
           err instanceof Error ? err.message : err,
         )
       }
+      const jevReview = await reviewSourceSummaryWithJev({
+        projectPath: pp, sourcePath: sp, sourceIdentity, sourceText: sourceContent,
+        summaryPath: sourceSummaryPath, config: { ...useWikiStore.getState().jevConfig },
+        llmConfig, chinese: getOutputLanguage(sourceContent) === "zh", signal,
+      })
+      throwIfIngestAborted(signal, activityId)
+      if (jevReview.detail) syncJevCitationReviews(sp, jevReview.items)
       activity.updateItem(activityId, {
         status: "done",
-        detail: `Skipped (unchanged) — ${cachedFiles.length} files from previous ingest`,
+        detail: [`Skipped (unchanged) — ${cachedFiles.length} files from previous ingest`, jevReview.detail].filter(Boolean).join(" — "),
         filesWritten: cachedFiles,
       })
       return cachedFiles
@@ -1403,6 +1411,13 @@ async function autoIngestImpl(
   // Do this only after the completeness gate above. Otherwise every queue
   // retry could duplicate review items derived from the same partial output.
   throwIfIngestAborted(signal, activityId)
+  const jevReview = await reviewSourceSummaryWithJev({
+    projectPath: pp, sourcePath: sp, sourceIdentity, sourceText: sourceContent,
+    summaryPath: sourceSummaryPath, config: { ...useWikiStore.getState().jevConfig },
+    llmConfig, chinese: getOutputLanguage(sourceContent) === "zh", signal,
+  })
+  throwIfIngestAborted(signal, activityId)
+  if (jevReview.detail) syncJevCitationReviews(sp, jevReview.items)
   const reviewItems = [
     ...parseReviewBlocks(generation, sp),
     ...parseReviewBlocks(reviewSuggestionOutput, sp),
@@ -1454,9 +1469,10 @@ async function autoIngestImpl(
   const baseDetail = writtenPaths.length > 0
     ? `${writtenPaths.length} files written${reviewItems.length > 0 ? `, ${reviewItems.length} review item(s)` : ""}`
     : "No files generated"
-  const detail = warningSummary
+  const ingestDetail = warningSummary
     ? `${baseDetail} — ${warningSummary} (saved to .llm-wiki/ingest-warnings.log)`
     : baseDetail
+  const detail = [ingestDetail, jevReview.detail].filter(Boolean).join(" — ")
 
   activity.updateItem(activityId, {
     status: writtenPaths.length > 0 ? "done" : "error",

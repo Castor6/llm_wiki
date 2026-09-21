@@ -18,6 +18,8 @@ export interface ReviewItem {
   resolved: boolean
   resolvedAction?: string
   createdAt: number
+  /** Allows a later source check to retire judgments about an older snapshot. */
+  origin?: "jev-citation"
 }
 
 interface ReviewState {

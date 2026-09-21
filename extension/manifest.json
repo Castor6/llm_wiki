@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "LLM Wiki Clipper",
+  "name": "LLM Wiki Jev Clipper",
   "version": "0.1.0",
   "description": "Clip web pages to your LLM Wiki knowledge base",
   "permissions": ["activeTab", "scripting", "storage"],

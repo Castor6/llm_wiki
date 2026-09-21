@@ -480,6 +480,7 @@
     "categories": {
       "general": "Generale",
       "llm": "Modelli LLM",
+      "jev": "Jev",
       "embedding": "Embedding",
       "multimodal": "Didascalie immagini",
       "webSearch": "Fonti di informazione esterne",
@@ -495,6 +496,27 @@
       "about": "Informazioni"
     },
     "sections": {
+      "jev": {
+        "title": "Jev · TypeSafe",
+        "description": "Usa Jev per verificare le pagine suggerite come duplicate e un campione di affermazioni nei riepiloghi delle fonti rispetto alle citazioni. Le verifiche sono consultive. Per scrivere la wiki e conversare serve comunque un modello generativo separato.",
+        "enabled": "Abilita Jev per tutti i progetti",
+        "dataNotice": "Se abilitato, il testo pertinente delle fonti e gli estratti wiki vengono inviati a TypeSafe per la valutazione.",
+        "apiKey": "Chiave API TypeSafe",
+        "apiKeyPlaceholder": "Inserisci la tua chiave API TypeSafe",
+        "storageHint": "Salvata nelle impostazioni locali dell’app, condivisa tra i progetti ed esclusa dalle esportazioni.",
+        "model": "Versione del modello",
+        "modelHint": "Una versione fissa mantiene i confronti sullo stesso modello. jev-latest segue l’ultima versione di TypeSafe.",
+        "timeout": "Timeout della richiesta (secondi)",
+        "testConnection": "Verifica connessione",
+        "testRunning": "Verifica in corso…",
+        "testHint": "Invia un breve esempio sintetico a TypeSafe e consuma crediti API. Il test non invia materiali del progetto.",
+        "testSuccess": "Connesso · {{model}} · {{input}} token in ingresso / {{output}} in uscita",
+        "testFailed": "Connessione non riuscita. Controlla la chiave API, la versione del modello e la rete.",
+        "autoSaveHint": "Le impostazioni si salvano quando lasci un campo o cambi l’interruttore.",
+        "saving": "Salvataggio…",
+        "saveFailed": "Impossibile salvare le impostazioni. Restano attive in questa sessione; riprova per conservarle dopo il riavvio.",
+        "retrySave": "Riprova il salvataggio"
+      },
       "general": {
         "title": "Generale",
         "description": "Comportamento all'avvio e gestione della finestra dell'app desktop.",
